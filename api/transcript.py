@@ -4,13 +4,15 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# Load the API key from an environment variable
+# Load the API key and FlareSolverr URL from environment variables
 API_KEY = os.getenv("API_KEY")
+FLARESOLVERR_URL = os.getenv("FLARESOLVERR_URL")
 
 def fetch_youtube_transcript(video_id):
-    """Fetches the transcript of a YouTube video."""
+    """Fetches the transcript of a YouTube video using FlareSolverr as a proxy."""
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        proxies = {"https": FLARESOLVERR_URL} if FLARESOLVERR_URL else None
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, proxies=proxies)
         return transcript
     except Exception as e:
         return str(e)
