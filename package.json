@@ -17,3 +17,10 @@
     "youtube-transcript": "^1.2.1"
   }
 }
+
+curl -X POST http://localhost:3000/api/transcript \
+-H "Content-Type: application/json" \
+-d '{
+      "videoId": "Ynd63aBFRKE",
+      "apiKey": "thisisforclarify2024!"
+    }'

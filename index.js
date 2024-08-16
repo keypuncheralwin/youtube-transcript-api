@@ -1,6 +1,6 @@
 import express from 'express';
 import { YoutubeTranscript } from 'youtube-transcript';
-import { parse } from 'node-html-parser';
+import parse from 'node-html-parser';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -27,7 +27,7 @@ async function fetchVideoTitle(videoId) {
       }
     ).then((res) => res.text());
 
-    const html = parse(videoPage);
+    const html = parse(videoPage);  // Correct usage here
     const videoTitle = html.querySelector('title')?.text || 'Unknown title';
 
     if (videoTitle === 'Unknown title') {
@@ -44,9 +44,11 @@ async function fetchVideoTitle(videoId) {
 
 async function getFullTranscript(videoId) {
   try {
+    // Ensure videoId is a string
+    const id = String(videoId);
     const [transcript, title] = await Promise.all([
-      YoutubeTranscript.fetchTranscript(videoId),
-      fetchVideoTitle(videoId),
+      YoutubeTranscript.fetchTranscript(id),
+      fetchVideoTitle(id),
     ]);
 
     const fullTranscript = transcript
